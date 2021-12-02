@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {User,LaCroix,Review}  = require("../../models")
+const {Comment, Blog, User}  = require("../../models")
 
 router.get('/',(req,res)=>{
     Blog.findAll({
@@ -8,7 +8,7 @@ router.get('/',(req,res)=>{
         include:[User]
     }).then(blogData=>{
         const hbsblogs = blogData.map(blog=>blog.get({plain:true}))
-        res.render("homepage",{
+        res.render("home",{
             blogs:hbsblogs
         })
     })
@@ -16,7 +16,7 @@ router.get('/',(req,res)=>{
 
 router.get("/profile",(req,res)=>{
     if(!req.session.user){
-        return res.status(401).render("no")
+        return res.status(401).render("blocked")
     }
     User.findByPk(req.session.user.id,{
         include:[Blog]
@@ -52,8 +52,8 @@ router.get("/comments/:id", async(req,res)=>{
       }
 })
 
-router.get("/signin",(req,res)=>{
-    res.render("signin")
+router.get("/login",(req,res)=>{
+    res.render("login")
 })
 
 router.get("/signup",(req,res)=>{

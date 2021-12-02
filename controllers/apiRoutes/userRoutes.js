@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Blog, User} = require('../../models');
+const {Comment, Blog, User} = require('../../models');
 const bcrypt = require("bcrypt");
 
 
@@ -19,7 +19,7 @@ router.get("/",(req,res)=>{
     })
 })
 
-router.post("/signin",(req,res)=>{
+router.post("/login",(req,res)=>{
     User.findOne({
         where:{
             email:req.body.email

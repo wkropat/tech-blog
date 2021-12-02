@@ -1,107 +1,82 @@
-const express = require('express');
-const router = express.Router();
-const {LaCroix,User} = require('../../models');
+const router = require('express').Router();
+const { Blog, User, Comment} = require('../../models');
 
-router.get("/",(req,res)=>{
-    LaCroix.findAll().then(laCroixData=>{
-        res.json(laCroixData)
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
 
-router.get("/:id",(req,res)=>{
-    LaCroix.findByPk(req.params.id).then(singleCroix=>{
-        if(singleCroix){
-            res.json(singleCroix)
-        } else {
-            res.status(404).json({err:"no such flavor found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
+router.get('/', async (req, res) => {
+  try {
+    const blogData = await Blog.findAll({
+      include: [User, Comment],
+    });
+    res.status(200).json(blogData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-router.post("/",(req,res)=>{
-    LaCroix.create({
-        flavor:req.body.flavor,
-        image:req.body.image
-    }).then(newLacroix=>{
-        res.json(newLacroix)
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
+router.get('/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.findByPk(req.params.id, {
+      include: [User, Comment],
+    });
 
-router.post("/favorite/:id",(req,res)=>{
-    if(!req.session.user){
-        return res.status(403).json({err:"not logged in!"})
+    if (!blogData) {
+      res.status(404).json({ message: 'No Blog found with that id!' });
+      return;
     }
-    User.findByPk(req.session.user.id).then(loggedInUser=>{
-        loggedInUser.addFavorite(req.params.id).then(result=>{
-           res.json(result)
-        }).catch(err=>{
-            console.log(err);
-            res.status(500).json({err})
-        })
+
+    res.status(200).json(blogData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+router.post('/', async (req, res) => {
+  try {
+    const blogData = await Blog.create({
+      name: req.body.name,
+      description: req.body.description,
+      user_id: req.session.user.id
     })
-})
-router.delete("/favorite/:id",(req,res)=>{
-    if(!req.session.user){
-        return res.status(403).json({err:"not logged in!"})
+    res.status(200).json(blogData)
+  } catch(err) {
+      console.log(err);
+      res.status(400).json({ message: "Unable to create blog.", err: err });
+    };
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!blogData[0]) {
+      res.status(404).json({ message: 'No Blog with this id!' });
+      return;
     }
-    User.findByPk(req.session.user.id).then(loggedInUser=>{
-        loggedInUser.removeFavorite(req.params.id).then(result=>{
-            if(result){
-                return res.json(result);
-            } else {
-                return res.status(404).json({msg:"not favorited"})
-            }
-        }).catch(err=>{
-            console.log(err);
-            res.status(500).json({err})
-        })
-    })
-})
+    res.status(200).json(blogData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-router.put("/:id",(req,res)=>{
-    LaCroix.update({
-        flavor:req.body.flavor,
-        image:req.body.image
-    },{
-        where:{
-            id:req.params.id
-        }
-    }).then(updatedData=>{
-        if(updatedData[0]){
-            res.json(updatedData)
-        } else {
-            res.status(404).json({err:"no such flavor found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
-
-router.delete("/:id",(req,res)=>{
-    LaCroix.destroy({
-        where:{
-            id:req.params.id
-        }
-    }).then(deletedLacroix=>{
-        if(deletedLacroix){
-            res.json(deletedLacroix)
-        } else {
-            res.status(404).json({err:"no such flavor found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({err})
-    })
-})
+router.delete('/:id', async (req, res) => {
+  try {
+    const blogData = await Blog.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!blogData) {
+      res.status(404).json({ message: 'No Blog with this id!' });
+      return;
+    }
+    res.status(200).json(blogData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
