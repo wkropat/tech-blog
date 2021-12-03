@@ -3,7 +3,7 @@ const router = express.Router();
 const {Comment, Blog, User} = require('../../models');
 const bcrypt = require("bcrypt");
 
-
+// Get all users
 router.get("/",(req,res)=>{
     User.findAll({
         include:[Blog]
@@ -18,6 +18,27 @@ router.get("/",(req,res)=>{
         res.status(500).json({message:"Error:",err:err})
     })
 })
+// Get user by id
+router.get("/:id", (req, res) => {
+    User.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [Blog, Comment],
+    })
+      .then((dbUser) => {
+        console.log(req.params.id);
+        if (dbUser) {
+          res.json(dbUser);
+        } else {
+          res.status(404).json({ message: "User not found!" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: "an error occured", err: err });
+      });
+  });
 
 router.post("/login",(req,res)=>{
     User.findOne({

@@ -1,25 +1,24 @@
 {
-  "name": "lacroix-bois",
+  "name": "tech-blog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tech Blog",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node seeds/seed.js",
-    "watch": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rufasa85/lacroix-bois.git"
+    "url": "git+https://github.com/wkropat/tech-blog.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Rufasa85/lacroix-bois/issues"
+    "url": "https://github.com/wkropat/tech-blog/issues"
   },
-  "homepage": "https://github.com/Rufasa85/lacroix-bois#readme",
+  "homepage": "https://github.com/wkropat/tech-blog#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "connect-session-sequelize": "^7.1.2",
@@ -28,6 +27,6 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "mysql2": "^2.3.2",
-    "sequelize": "^6.9.0"
+    "sequelize": "^6.8.0"
   }
 }

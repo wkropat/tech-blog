@@ -1,27 +1,33 @@
 document.querySelector("form#signup").addEventListener("submit",(e)=>{
-
-    e.preventDefault();
-    console.log("Hit the event listener. Signup")
-    const fetchObj = {
-        email: document.querySelector("#signup-email").value,
-        password: document.querySelector("#signup-password").value,
-        username: document.querySelector("#signup-username").value,
-    }
-    fetch("/api/users/signup",{
-        method:"POST",
-        body:JSON.stringify(fetchObj),
-        headers:{
-            "Content-Type":"application/json"
+        e.preventDefault();
+        const userObj={
+            username:document.querySelector("#signup-username").value,
+            password:document.querySelector("#signup-password").value,
+            email:document.querySelector("#signup-email").value,
         }
-    }).then(res=>{
-        if(!res.ok){
-            return alert("Sign Up Successful")
-        } else {
-            res.json().then(userData=>{
-                // location.href = `/profile/${data.id}`
-                // const hbsUser = userData.get({plain:true});
-                res.render("profile",userData)
-            })
-        }
+        fetch("/api/users",{
+            method:"POST",
+            body:JSON.stringify(userObj),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }).then(res=>{
+            if(res.ok){
+                const userObj={
+                    email:document.querySelector("#signup-email").value,
+                    password:document.querySelector("#signup-password").value,
+                }
+                fetch("/api/users/login",{
+                    method:"POST",
+                    body:JSON.stringify(userObj),
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                }).then(res=>{
+                    if(res.ok){
+                       location.href = "/profile"}})
+            } else {
+                alert("Unable to create user")
+            }
+        })
     })
-})
