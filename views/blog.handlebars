@@ -1,1 +1,23 @@
-<h1>blog!</h1>
+<div>
+  <div class="blog">
+    <h2 class="blogName">{{blog.name}}</h2>
+    <h3 class="blogAuthor">{{blog.User.username}}</h3>
+    <p class="blogDesc">{{blog.description}}</p>
+  </div>
+
+    <div class="commentSection">
+        {{#each blog.Comments}}
+        <div class='card'>
+            <p class="comment">{{name}} says: {{description}}</p>
+        </div>
+        {{/each}}
+    </div>
+
+    <form id="newComment">
+        <input type="text" id="name" placeholder="Name"> <br>
+        <textarea id="description" name="description" rows="3" cols="50">Have something to say?</textarea><br>
+        <button>Yes I do!</button>
+    </form>
+</div>
+
+<script src="/js/addComment.js"></script>

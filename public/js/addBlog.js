@@ -12,7 +12,7 @@ document.querySelector("#add-blog").addEventListener("submit",evt=>{
         }
     }).then(res=>{
         if(res.ok){
-           location.href = "/profile"
+           location.href = "/profile/:id"
         } else {
             alert("trumpet sound")
         }

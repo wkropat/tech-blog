@@ -55,7 +55,9 @@ router.post("/signup",(req,res)=>{
         email:req.body.email
     }).then(newUser=>{
         res.json(newUser);
-    }).catch(err=>{
+    }).then(hbsUser=>{
+        res.render("profile",hbsUser)}
+    ).catch(err=>{
         console.log(err);
         res.status(500).json({message:"Error:",err:err})
     })

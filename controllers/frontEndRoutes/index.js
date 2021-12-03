@@ -14,11 +14,12 @@ router.get('/',(req,res)=>{
     })
 })
 
-router.get("/profile",(req,res)=>{
+router.get("/profile/:id",(req,res)=>{
+    console.log(req);
     if(!req.session.user){
         return res.status(401).render("blocked")
     }
-    User.findByPk(req.session.user.id,{
+    User.findByPk(req.params.id,{
         include:[Blog]
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});

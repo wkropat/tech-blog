@@ -12,7 +12,7 @@ document.querySelector("form#login").addEventListener("submit",(e)=>{
         }
     }).then(res=>{
         if(!res.ok){
-            return alert("trumpet sound")
+            return alert("Logged in!")
         } else {
             res.json().then(data=>{
                 location.href = `/profile/${data.id}`

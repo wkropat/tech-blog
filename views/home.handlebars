@@ -1,1 +1,7 @@
 <h1>homepage!</h1>
+{{#each blogs}}
+    <div class="card">
+        <a class="link" href="/blogs/{{id}}"><h3>{{name}}</h3></a>
+        <h4 class="author">~~{{User.username}}~~</h4>
+    </div>
+{{/each}}

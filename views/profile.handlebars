@@ -1,5 +1,4 @@
 <h1 class="pageHeader">{{username}}</h1>
-<h2 class="pageHeader">Reviews!</h2>
 <div class="cardContainer">
 {{#each Blogs}}
     <div class="card">
@@ -8,3 +7,11 @@
     </div>
 {{/each}}
 </div>
+<div>
+    <form id="add-blog">
+        <input type="text" id="name" placeholder="name"><br>
+        <textarea name="description" id="description" cols="100" rows="10"></textarea><br>
+        <button>New Blog!</button>
+    </form>
+</div>
+<script src="/js/addBlog.js"></script>
