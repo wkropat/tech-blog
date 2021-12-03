@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const allRoutes = require('./controllers');
-const sequelize = require('./config/connection');
+const sequelize = require('./config/connection.js');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // Sets up the Express App
@@ -12,20 +12,18 @@ const PORT = process.env.PORT || 3000;
 // Requiring our models for syncing
 const {Blog,User,Comment} = require('./models');
 
-
-const sess = {
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-        maxAge:1000*60*60*2
-    },
+app.use(session({
+    secret: process.env.SESSION_SECRET, //yay this should never be exposed, only lives on the local machine
     resave: false,
     saveUninitialized: true,
-    store: new SequelizeStore({
-        db: sequelize
-    })
-};
+    cookie: { 
+        maxAge: 1000 * 60 * 60 * 2
+     },
+     store: new SequelizeStore({
+        db:sequelize
+     })
+  }))
 
-app.use(session(sess));
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
