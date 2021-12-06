@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const {Blog,User,Comment} = require('./models');
 
 app.use(session({
-    secret: process.env.SESSION_SECRET, //yay this should never be exposed, only lives on the local machine
+    secret: process.env.SESSION_SECRET, 
     resave: false,
     saveUninitialized: true,
     cookie: { 
@@ -24,7 +24,7 @@ app.use(session({
      })
   }))
 
-// Sets up the Express app to handle data parsing
+// Sets up the Express app
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
