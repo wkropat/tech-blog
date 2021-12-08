@@ -64,7 +64,7 @@ router.post("/login",(req,res)=>{
                 req.session.user = {
                     username:foundUser.username,
                     email:foundUser.email,
-                    id:foundUser.id
+                    // id:foundUser.id
                 }
                 res.json(foundUser) 
             } else {
@@ -74,7 +74,7 @@ router.post("/login",(req,res)=>{
         }
     }).catch(err=>{
          console.log(err);
-        res.status(500).json(err);2
+        res.status(500).json(err);
     })
 })
 
