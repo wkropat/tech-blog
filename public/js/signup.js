@@ -1,33 +1,22 @@
-document.querySelector("form#signup").addEventListener("submit",(e)=>{
-        e.preventDefault();
-        const userObj={
-            username:document.querySelector("#signup-username").value,
-            password:document.querySelector("#signup-password").value,
-            email:document.querySelector("#signup-email").value,
-        }
-        fetch("/api/users/signup",{
-            method:"POST",
-            body:JSON.stringify(userObj),
-            headers:{
-                "Content-Type":"application/json"
-            }
-        }).then(res=>{
-            if(res.ok){
-                const userObj={
-                    email:document.querySelector("#signup-email").value,
-                    password:document.querySelector("#signup-password").value,
-                }
-                fetch("/api/users/login",{
-                    method:"POST",
-                    body:JSON.stringify(userObj),
-                    headers:{
-                        "Content-Type":"application/json"
-                    }
-                }).then(res=>{
-                    if(res.ok){
-                       location.href = "/profile"}})
-            } else {
-                alert("Unable to create user")
-            }
-        })
-    })
+const signupFormHandler = async (event) => {
+    event.preventDefault();
+  
+    const username = document.querySelector('#signup-username').value;
+    const email = document.querySelector('#signup-email').value;
+    const password = document.querySelector('#signup-password').value;
+  
+    if (username && email && password) {
+      const response = await fetch('/api/users/signup', {
+        method: 'POST',
+        body: JSON.stringify({ username, password, email }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+      if (response.ok) {
+        document.location.replace('/');
+      } else {
+        alert(response.statusText);
+      }
+    }
+  };
+  document.querySelector('#signupForm').addEventListener('submit', signupFormHandler);

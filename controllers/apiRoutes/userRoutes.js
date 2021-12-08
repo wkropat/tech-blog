@@ -2,7 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {Comment, Blog, User} = require('../../models');
 const bcrypt = require("bcrypt");
-
+router.post('/logout', (req, res) => {
+    // if (req.session.logged_in) {
+    //   req.session.destroy(() => {
+    //     res.status(204).end();
+    //   });
+    // } else {
+    //   res.status(404).end();
+    // }
+    req.session.destroy(() => {
+     res.status(204).end();})
+  });
 // Get all users
 router.get("/",(req,res)=>{
     User.findAll({
@@ -64,7 +74,7 @@ router.post("/login",(req,res)=>{
         }
     }).catch(err=>{
          console.log(err);
-        res.status(500).json(err);
+        res.status(500).json(err);2
     })
 })
 
@@ -77,17 +87,14 @@ router.post("/signup",(req,res)=>{
     }).then(newUser=>{
         res.json(newUser);
     }).then(hbsUser=>{
-        res.render("profile",hbsUser)}
+        res.render("home",hbsUser)}
     ).catch(err=>{
         console.log(err);
         res.status(500).json({message:"Error:",err:err})
     })
 })
 
-router.get("/logout",(req,res) => {
-    req.session.destroy();
-    res.render("logout");
-})
+
 
 router.delete("/:id",(req,res)=>{
     User.destroy({
